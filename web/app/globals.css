@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@theme {
+    /* Цвета из Figma */
+    --color-paper-1: #E9DCAE;
+    --color-paper-2: #D9C58A;
+    --color-surface: #FFFFFF;
+    --color-ink: #000000;
+    --color-muted: #555555;
+    --color-line: #E8E4D8;
+    --color-chip: #F5F2E8;
+    --color-cover: #F2EEDF;
+    --color-accent: #8A5A14;
+    /* Шрифты */
+    --font-sans: var(--font-inter), system-ui, sans-serif;
+    --font-serif: var(--font-lora), Georgia, serif;
+    /* Скругления */
+    --radius-sm: 12px;
+    --radius-md: 20px;
+    --radius-pill: 999px;
+}
+
+body {
+    background: var(--color-paper-1);
+    color: var(--color-ink);
+}
