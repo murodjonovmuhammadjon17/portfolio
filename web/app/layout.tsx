@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Lora } from "next/font/google";
 import "./globals.css";
+import { Shell } from "@/components/layout/Shell";
+import { siteConfig } from "@/lib/site";
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -13,8 +15,8 @@ const lora = Lora({
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio",
-  description: "Product designer portfolio",
+  title: { default: siteConfig.name, template: `%s | ${siteConfig.name}` },
+  description: siteConfig.description,
 };
 
 export default function RootLayout({
@@ -24,7 +26,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${lora.variable}`}>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        <Shell>{children}</Shell>
+      </body>
     </html>
   );
 }
