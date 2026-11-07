@@ -26,7 +26,7 @@ const projects: Project[] = [
       { alt: "Traveller screen 3" },
       { alt: "Traveller screen 4" },
     ],
-    // caseStudySlug: "traveller", // раскомментировать в этапе 3b
+    caseStudySlug: "traveller",
   },
   {
     slug: "lunch-box",
