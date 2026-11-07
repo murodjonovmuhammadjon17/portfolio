@@ -1,32 +1,159 @@
-export default function Home() {
+import { Button } from "@/components/ui/Button";
+import { Tag } from "@/components/ui/Tag";
+import { Section } from "@/components/ui/Section";
+import { InfoCard } from "@/components/ui/InfoCard";
+import { CoverImage } from "@/components/ui/CoverImage";
+import { Facts, projectFacts } from "@/components/ui/Facts";
+import { ProjectCard } from "@/components/cards/ProjectCard";
+import { getAllProjects } from "@/lib/content/projects";
+import { home } from "@/lib/content/home";
+import { siteConfig } from "@/lib/site";
+
+const num = (i: number) => String(i + 1).padStart(2, "0");
+
+export default async function HomePage() {
+  const projects = await getAllProjects();
+  const selected = projects.filter((p) => p.featured);
+  const featured = selected[0];
+
+  const contactLinks = [
+    { label: "Email", href: siteConfig.links.email },
+    { label: "LinkedIn", href: siteConfig.links.linkedin },
+    { label: "Telegram", href: siteConfig.links.telegram },
+    { label: "Download CV", href: siteConfig.links.cv },
+  ].filter((l) => l.href);
+
   return (
-    <main className="min-h-screen p-6 md:p-12">
-      <div className="mx-auto max-w-4xl rounded-md bg-surface p-8 md:p-12">
-        <nav className="font-serif text-xl">Projects · About · Contact</nav>
-
-        <h1 className="mt-12 text-3xl font-bold italic md:text-5xl">
-          I am Muhammad, a product designer
+    <>
+      <section className="px-6 pb-12 pt-10 md:px-12 md:pb-20 md:pt-16">
+        <h1 className="max-w-3xl text-[28px] font-bold italic leading-tight md:text-5xl">
+          {home.hero.headline}{" "}
+          <span className="text-muted">{home.hero.accent}</span>
         </h1>
-        <p className="mt-4 text-muted">
-          Temporary check page for design tokens.
-        </p>
-
-        <a
-          href="#"
-          className="mt-8 inline-block rounded-pill bg-ink px-6 py-3 text-surface"
-        >
-          View projects
-        </a>
-
-        <div className="mt-12 flex gap-2">
-          <span className="rounded-pill bg-chip px-3 py-1 text-sm">
-            Product design
-          </span>
-          <span className="rounded-pill bg-chip px-3 py-1 text-sm text-accent">
-            Student project
-          </span>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <Button href="/#work">View projects</Button>
+          <Button href="/#contact" variant="outline">
+            Contact
+          </Button>
         </div>
-      </div>
-    </main>
+        <p className="mt-4 text-xs text-muted">{home.hero.status}</p>
+      </section>
+
+      <Section id="work" title="Selected work" intro={home.workIntro}>
+        <div className="grid gap-6 md:grid-cols-3">
+          {selected.map((p) => (
+            <ProjectCard key={p.slug} project={p} />
+          ))}
+        </div>
+      </Section>
+
+      <Section
+        id="what-i-do"
+        title="What I do"
+        intro="Four areas I work in, from the first sketch to a design system developers can use."
+      >
+        <div className="grid gap-4 md:grid-cols-2">
+          {home.whatIDo.map((item, i) => (
+            <InfoCard
+              key={item.title}
+              kicker={num(i)}
+              title={item.title}
+              text={item.text}
+            />
+          ))}
+        </div>
+        <div className="mt-6 flex flex-wrap items-center gap-2">
+          <span className="text-xs text-muted">Tools</span>
+          {home.tools.map((t) => (
+            <Tag key={t}>{t}</Tag>
+          ))}
+        </div>
+      </Section>
+
+      {featured && (
+        <Section
+          id="featured"
+          title={`Featured case: ${featured.title}`}
+          intro={featured.shortDescription}
+        >
+          <CoverImage
+            src={featured.coverImage?.src}
+            alt={featured.coverImage?.alt ?? ""}
+            label="Cover image: key screens"
+            aspect="aspect-[16/9]"
+            sizes="(min-width: 1304px) 1200px, 100vw"
+          />
+          <div className="mt-6">
+            <Facts items={projectFacts(featured)} />
+          </div>
+          {featured.overview && (
+            <p className="mt-6 max-w-3xl">{featured.overview}</p>
+          )}
+          <div className="mt-6">
+            {featured.caseStudySlug ? (
+              <Button
+                href={`/case-studies/${featured.caseStudySlug}`}
+                variant="outline"
+              >
+                Read case study →
+              </Button>
+            ) : (
+              <Button href={`/projects/${featured.slug}`} variant="outline">
+                View project →
+              </Button>
+            )}
+          </div>
+        </Section>
+      )}
+
+      <Section
+        id="how-i-work"
+        title="How I work"
+        intro="A simple loop I repeat on every project."
+      >
+        <div className="grid gap-4 md:grid-cols-4">
+          {home.howIWork.map((step, i) => (
+            <InfoCard
+              key={step.title}
+              kicker={num(i)}
+              title={step.title}
+              text={step.text}
+            />
+          ))}
+        </div>
+      </Section>
+
+      <Section id="about" title="About">
+        <div className="grid gap-8 md:grid-cols-2">
+          <p className="max-w-xl text-lg">{home.about.text}</p>
+          <Facts
+            items={[
+              { label: "Education", value: home.about.education },
+              { label: "Study", value: home.about.study },
+            ]}
+          />
+        </div>
+      </Section>
+
+      <Section
+        id="contact"
+        title="Contact"
+        intro="Open to internships in UX/UI and product design."
+      >
+        {contactLinks.length > 0 && (
+          <div className="flex flex-wrap gap-3">
+            {contactLinks.map((l, i) => (
+              <Button
+                key={l.label}
+                href={l.href}
+                variant={i === 0 ? "primary" : "outline"}
+              >
+                {l.label}
+              </Button>
+            ))}
+          </div>
+        )}
+      </Section>
+    </>
   );
 }
