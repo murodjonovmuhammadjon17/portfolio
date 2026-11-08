@@ -1,26 +1,40 @@
 @import "tailwindcss";
 
 @theme {
-    /* Цвета из Figma */
-    --color-paper-1: #E9DCAE;
-    --color-paper-2: #D9C58A;
-    --color-surface: #FFFFFF;
-    --color-ink: #000000;
-    --color-muted: #555555;
-    --color-line: #E8E4D8;
-    --color-chip: #F5F2E8;
-    --color-cover: #F2EEDF;
-    --color-accent: #8A5A14;
-    /* Шрифты */
-    --font-sans: var(--font-inter), system-ui, sans-serif;
-    --font-serif: var(--font-lora), Georgia, serif;
-    /* Скругления */
-    --radius-sm: 12px;
-    --radius-md: 20px;
-    --radius-pill: 999px;
+  /* Цвета из Figma: Design System → Color */
+  --color-paper-1: #E9DCAE;
+  --color-paper-2: #D9C58A;
+  --color-surface: #FFFFFF;
+  --color-ink: #000000;
+  --color-muted: #555555;
+  --color-line: #E8E4D8;
+  --color-chip: #F5F2E8;
+  --color-cover: #F2EEDF;
+  --color-accent: #8A5A14;
+
+  /* Шрифты: Inter для текста, Lora для заголовков и навигации */
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-serif: var(--font-lora), Georgia, serif;
+
+  /* Скругления: sm 12, md 20, pill 999 */
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-pill: 999px;
 }
 
 body {
-    background: var(--color-paper-1);
-    color: var(--color-ink);
+  background: var(--color-paper-1);
+  color: var(--color-ink);
+}
+
+/* Бумажная текстура: отдельный слой под сайтом, только на широких экранах */
+@media (min-width: 768px) {
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: url("/paper.webp") center / cover no-repeat;
+  }
 }
