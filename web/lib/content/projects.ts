@@ -1,62 +1,84 @@
-import type { Project } from "@/types/content";
+import { client } from "@/lib/sanity/client";
+import { allProjectsQuery, projectBySlugQuery } from "@/lib/sanity/queries";
+import type { Project, ProjectImage } from "@/types/content";
 
-const projects: Project[] = [
-  {
-    slug: "traveller",
-    title: "Traveller",
-    shortDescription:
-      "Travel and booking app. Mobile and desktop screens, UI kit and a design system.",
-    categories: ["Product design", "Student project"],
-    featured: true,
-    displayOrder: 1,
-    role: "Product designer (UX/UI)",
-    type: "Student project",
-    tools: ["Figma", "FigJam"],
-    scope: "Mobile and desktop screens, UI kit, design system",
-    overview:
-      "Traveller is a travel and booking app designed as a UX/UI course project. The work covers a UI kit, components with variants, a design system with tokens for light and dark themes, and screens for mobile and desktop.",
-    highlights: [
-      { title: "UI kit", text: "Colours, type, buttons, inputs, cards and icons." },
-      { title: "Components", text: "Variants, states and instance-swap icons." },
-      { title: "Tokens", text: "Light and dark design tokens for every screen." },
-    ],
-    gallery: [
-      { alt: "Traveller screen 1" },
-      { alt: "Traveller screen 2" },
-      { alt: "Traveller screen 3" },
-      { alt: "Traveller screen 4" },
-    ],
-    caseStudySlug: "traveller",
-  },
-  {
-    slug: "lunch-box",
-    title: "Lunch Box",
-    shortDescription:
-      "Food app concept that combines a restaurant lunch subscription with a marketplace of home-cooked meals.",
-    categories: ["Concept", "UX/UI"],
-    featured: true,
-    displayOrder: 2,
-  },
-  {
-    slug: "squaddrop",
-    title: "SquadDrop",
-    shortDescription:
-      "Sci-fi styled app. Wireframes, component kit and a library of components in Figma.",
-    categories: ["Wireframes", "Component kit"],
-    featured: true,
-    displayOrder: 3,
-  },
-];
+export type RawImage = {
+  src?: string | null;
+  alt?: string | null;
+  caption?: string | null;
+} | null;
 
-// Phase 4: тела этих функций заменим запросами к Sanity, сигнатуры останутся.
+type RawProject = {
+  slug: string;
+  title: string;
+  shortDescription: string;
+  categories: string[] | null;
+  featured: boolean | null;
+  displayOrder: number | null;
+  role: string | null;
+  type: string | null;
+  tools: string[] | null;
+  scope: string | null;
+  overview: string | null;
+  prototypeUrl: string | null;
+  highlights: { title: string; text: string }[] | null;
+  coverImage: RawImage;
+  gallery: RawImage[] | null;
+  caseStudySlug: string | null;
+};
+
+export function toImage(raw: RawImage | undefined): ProjectImage | undefined {
+  if (!raw?.src) return undefined;
+  return {
+    src: raw.src,
+    alt: raw.alt ?? "",
+    caption: raw.caption ?? undefined,
+  };
+}
+
+function toProject(raw: RawProject): Project {
+  return {
+    slug: raw.slug,
+    title: raw.title,
+    shortDescription: raw.shortDescription,
+    categories: raw.categories ?? [],
+    featured: raw.featured ?? false,
+    displayOrder: raw.displayOrder ?? 999,
+    role: raw.role ?? undefined,
+    type: raw.type ?? undefined,
+    tools: raw.tools ?? undefined,
+    scope: raw.scope ?? undefined,
+    overview: raw.overview ?? undefined,
+    prototypeUrl: raw.prototypeUrl ?? undefined,
+    highlights: raw.highlights ?? undefined,
+    coverImage: toImage(raw.coverImage),
+    gallery: raw.gallery
+      ?.map(toImage)
+      .filter((i): i is ProjectImage => i !== undefined),
+    caseStudySlug: raw.caseStudySlug ?? undefined,
+  };
+}
+
+const fetchOptions = { cache: "force-cache" as const, next: { tags: ["project"] } };
+
 export async function getAllProjects(): Promise<Project[]> {
-  return [...projects].sort((a, b) => a.displayOrder - b.displayOrder);
+  const raw = await client.fetch<RawProject[]>(
+    allProjectsQuery,
+    {},
+    fetchOptions,
+  );
+  return raw.map(toProject);
 }
 
 export async function getProjectBySlug(
   slug: string,
 ): Promise<Project | undefined> {
-  return projects.find((p) => p.slug === slug);
+  const raw = await client.fetch<RawProject | null>(
+    projectBySlugQuery,
+    { slug },
+    fetchOptions,
+  );
+  return raw ? toProject(raw) : undefined;
 }
 
 export async function getAdjacentProjects(slug: string) {
