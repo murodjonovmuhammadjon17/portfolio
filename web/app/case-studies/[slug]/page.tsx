@@ -7,6 +7,7 @@ import { Section } from "@/components/ui/Section";
 import { CoverImage } from "@/components/ui/CoverImage";
 import { Facts, projectFacts } from "@/components/ui/Facts";
 import { ProjectCard } from "@/components/cards/ProjectCard";
+import { pageMetadata } from "@/lib/seo";
 import { CardGrid } from "@/components/case/CardGrid";
 import { ImageGrid } from "@/components/case/ImageGrid";
 import { SectionNav } from "@/components/case/SectionNav";
@@ -27,10 +28,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const cs = await getCaseStudyBySlug(slug);
   if (!cs) return {};
-  return {
+  return pageMetadata({
     title: `${cs.title}: case study`,
     description: cs.summary,
-  };
+    path: `/case-studies/${cs.slug}`,
+    image: cs.coverImage?.src,
+  });
 }
 
 export default async function CaseStudyPage({ params }: Props) {

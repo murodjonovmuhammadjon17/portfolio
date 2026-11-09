@@ -1,4 +1,5 @@
 export const siteConfig = {
+  url: "https://muhammad-murodjonov.vercel.app",
   name: "Muhammad Murodjonov",
   tagline: "Product designer with an IT background",
   description:

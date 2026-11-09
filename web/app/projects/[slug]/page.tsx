@@ -8,6 +8,7 @@ import { InfoCard } from "@/components/ui/InfoCard";
 import { CoverImage } from "@/components/ui/CoverImage";
 import { Facts, projectFacts } from "@/components/ui/Facts";
 import { ProjectCard } from "@/components/cards/ProjectCard";
+import { pageMetadata } from "@/lib/seo";
 import {
   getAllProjects,
   getProjectBySlug,
@@ -25,7 +26,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const project = await getProjectBySlug(slug);
   if (!project) return {};
-  return { title: project.title, description: project.shortDescription };
+  return pageMetadata({
+    title: project.title,
+    description: project.shortDescription,
+    path: `/projects/${project.slug}`,
+    image: project.coverImage?.src,
+  });
 }
 
 export default async function ProjectPage({ params }: Props) {
