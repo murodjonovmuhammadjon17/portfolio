@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Lora } from "next/font/google";
 import "./globals.css";
 import { Shell } from "@/components/layout/Shell";
-import { siteConfig } from "@/lib/site";
+import { getSiteSettings } from "@/lib/content/settings";
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -14,10 +14,13 @@ const lora = Lora({
   variable: "--font-lora",
 });
 
-export const metadata: Metadata = {
-  title: { default: siteConfig.name, template: `%s | ${siteConfig.name}` },
-  description: siteConfig.description,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const s = await getSiteSettings();
+  return {
+    title: { default: s.name, template: `%s | ${s.name}` },
+    description: s.description,
+  };
+}
 
 export default function RootLayout({
   children,

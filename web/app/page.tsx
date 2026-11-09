@@ -7,7 +7,7 @@ import { Facts, projectFacts } from "@/components/ui/Facts";
 import { ProjectCard } from "@/components/cards/ProjectCard";
 import { getAllProjects } from "@/lib/content/projects";
 import { home } from "@/lib/content/home";
-import { siteConfig } from "@/lib/site";
+import { getSiteSettings } from "@/lib/content/settings";
 
 const num = (i: number) => String(i + 1).padStart(2, "0");
 
@@ -15,12 +15,13 @@ export default async function HomePage() {
   const projects = await getAllProjects();
   const selected = projects.filter((p) => p.featured);
   const featured = selected[0];
+  const settings = await getSiteSettings();
 
   const contactLinks = [
-    { label: "Email", href: siteConfig.links.email },
-    { label: "LinkedIn", href: siteConfig.links.linkedin },
-    { label: "Telegram", href: siteConfig.links.telegram },
-    { label: "Download CV", href: siteConfig.links.cv },
+    { label: "Email", href: settings.links.email },
+    { label: "LinkedIn", href: settings.links.linkedin },
+    { label: "Telegram", href: settings.links.telegram },
+    { label: "Download CV", href: settings.links.cv },
   ].filter((l) => l.href);
 
   return (

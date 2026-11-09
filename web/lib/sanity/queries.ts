@@ -45,3 +45,8 @@ const caseFields = `
 export const allCaseStudiesQuery = `*[_type == "caseStudy" && defined(slug.current)]{${caseFields}}`;
 
 export const caseStudyBySlugQuery = `*[_type == "caseStudy" && slug.current == $slug][0]{${caseFields}}`;
+
+export const siteSettingsQuery = `*[_type == "siteSettings"][0]{
+  name, tagline, description, email, linkedin, telegram,
+  "cv": cvFile.asset->url
+}`;

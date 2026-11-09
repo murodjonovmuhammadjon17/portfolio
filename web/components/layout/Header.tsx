@@ -2,22 +2,17 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { siteConfig } from "@/lib/site";
 
-export function Header() {
+type Item = { label: string; href: string };
+
+export function Header({ name, items }: { name: string; items: Item[] }) {
   const [open, setOpen] = useState(false);
-  const items = [
-    ...siteConfig.nav,
-    ...(siteConfig.links.cv
-      ? [{ label: "CV", href: siteConfig.links.cv }]
-      : []),
-  ];
 
   return (
     <header className="px-6 py-5 md:px-12">
       <div className="flex items-center justify-between">
         <Link href="/" className="font-serif text-xl md:text-2xl">
-          {siteConfig.name}
+          {name}
         </Link>
 
         <nav
