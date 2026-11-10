@@ -1,0 +1,4 @@
+# Рабочие файлы, которые не нужны в репозитории
+web/CLAUDE.md
+web/Portfolio*.md
+studio/seed.ndjson
