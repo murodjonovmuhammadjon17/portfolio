@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { Tag } from "@/components/ui/Tag";
 import { Section } from "@/components/ui/Section";
@@ -27,17 +28,30 @@ export default async function HomePage() {
   return (
     <>
       <section className="px-6 pb-12 pt-10 md:px-12 md:pb-20 md:pt-16">
-        <h1 className="max-w-3xl text-[28px] font-bold italic leading-tight md:text-5xl">
-          {home.hero.headline}{" "}
-          <span className="text-muted">{home.hero.accent}</span>
-        </h1>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Button href="/#work">View projects</Button>
-          <Button href="/#contact" variant="outline">
-            Contact
-          </Button>
+        <div className="flex flex-col-reverse items-start gap-8 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h1 className="max-w-3xl text-[28px] font-bold italic leading-tight md:text-5xl">
+              {home.hero.headline}{" "}
+              <span className="text-muted">{home.hero.accent}</span>
+            </h1>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Button href="/#work">View projects</Button>
+              <Button href="/#contact" variant="outline">
+                Contact
+              </Button>
+            </div>
+            <p className="mt-4 text-xs text-muted">{home.hero.status}</p>
+          </div>
+          <Image
+            src="/img/avatarfoto.png"
+            alt="Muhammad Murodjonov"
+            width={4347}
+            height={4769}
+            priority
+            sizes="(min-width: 768px) 330px, 210px"
+            className="h-auto w-[210px] shrink-0 md:w-[330px]"
+          />
         </div>
-        <p className="mt-4 text-xs text-muted">{home.hero.status}</p>
       </section>
 
       <Section id="work" title="Selected work" intro={home.workIntro}>
@@ -96,11 +110,11 @@ export default async function HomePage() {
                 href={`/case-studies/${featured.caseStudySlug}`}
                 variant="outline"
               >
-                Read case study →
+                Read case study &rarr;
               </Button>
             ) : (
               <Button href={`/projects/${featured.slug}`} variant="outline">
-                View project →
+                View project &rarr;
               </Button>
             )}
           </div>
@@ -125,13 +139,25 @@ export default async function HomePage() {
       </Section>
 
       <Section id="about" title="About">
-        <div className="grid gap-8 md:grid-cols-2">
-          <p className="max-w-xl text-lg">{home.about.text}</p>
-          <Facts
-            items={[
-              { label: "Education", value: home.about.education },
-              { label: "Study", value: home.about.study },
-            ]}
+        <div className="grid items-center gap-8 md:grid-cols-[1fr_minmax(0,400px)]">
+          <div>
+            <p className="max-w-xl text-lg">{home.about.text}</p>
+            <div className="mt-6">
+              <Facts
+                items={[
+                  { label: "Education", value: home.about.education },
+                  { label: "Study", value: home.about.study },
+                ]}
+              />
+            </div>
+          </div>
+          <Image
+            src="/img/site-my-foto-1.png"
+            alt="Muhammad presenting a project"
+            width={1647}
+            height={1194}
+            sizes="(min-width: 768px) 400px, 100vw"
+            className="h-auto w-full"
           />
         </div>
       </Section>
