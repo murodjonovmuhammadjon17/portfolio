@@ -36,3 +36,6 @@ body::before {
   pointer-events: none;
   background: url("/paper.webp") center / cover no-repeat;
 }
+html {
+  overscroll-behavior-y: none;
+}

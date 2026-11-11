@@ -1,5 +1,6 @@
 import { Header } from "./Header";
 import { Footer } from "./Footer";
+import { ElasticCard } from "./ElasticCard";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { getSiteSettings } from "@/lib/content/settings";
 import { siteConfig } from "@/lib/site";
@@ -26,11 +27,11 @@ export async function Shell({ children }: { children: React.ReactNode }) {
           ...(sameAs.length > 0 ? { sameAs } : {}),
         }}
       />
-      <div className="mx-auto max-w-[1304px] overflow-hidden rounded-md bg-surface">
+      <ElasticCard>
         <Header name={settings.name} items={items} />
         <main>{children}</main>
         <Footer settings={settings} />
-      </div>
+      </ElasticCard>
     </div>
   );
 }
