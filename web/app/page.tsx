@@ -49,7 +49,7 @@ export default async function HomePage() {
             height={4769}
             priority
             sizes="(min-width: 768px) 330px, 210px"
-            className="h-auto w-[210px] shrink-0 md:w-[330px]"
+            className="h-auto w-[210px] shrink-0 self-center md:w-[330px] md:self-auto"
           />
         </div>
       </section>
