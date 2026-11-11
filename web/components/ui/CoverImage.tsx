@@ -18,7 +18,7 @@ export function CoverImage({
   return (
     <div className={`relative overflow-hidden rounded-sm bg-cover ${aspect}`}>
       {src ? (
-        <Image src={src} alt={alt} fill sizes={sizes} className="object-cover" />
+        <Image src={src} alt={alt} fill sizes={sizes} className="object-cover transition-transform duration-500 motion-safe:group-hover:scale-105" />
       ) : (
         <div className="absolute inset-0 grid place-items-center text-xs text-muted">
           {label}

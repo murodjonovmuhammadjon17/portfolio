@@ -5,7 +5,7 @@ import { CoverImage } from "@/components/ui/CoverImage";
 
 export function ProjectCard({ project }: { project: Project }) {
   return (
-    <article className="relative flex h-full flex-col rounded-md border border-line bg-surface p-4">
+    <article className="group relative flex h-full flex-col rounded-md border border-line bg-surface p-4 transition duration-300 hover:shadow-lg motion-safe:hover:-translate-y-1">
       <CoverImage
         src={project.coverImage?.src}
         alt={project.coverImage?.alt ?? ""}
@@ -29,7 +29,19 @@ export function ProjectCard({ project }: { project: Project }) {
         {project.shortDescription}
       </p>
       <p className="mt-4 text-sm font-semibold text-accent">
-        {project.caseStudySlug ? "View case study →" : "Case study soon"}
+        {project.caseStudySlug ? (
+          <>
+            View case study{" "}
+            <span
+              aria-hidden="true"
+              className="inline-block transition-transform duration-300 motion-safe:group-hover:translate-x-1"
+            >
+              &rarr;
+            </span>
+          </>
+        ) : (
+          "Case study soon"
+        )}
       </p>
     </article>
   );
